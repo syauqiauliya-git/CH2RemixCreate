@@ -17,11 +17,13 @@ struct ContentView: View {
                 path.addLine(to: end)
             }
             .stroke(.blue, lineWidth: 2)
+            
+        }
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, gleen")
+            Text("Helblo, gleen")
         }
         .frame(height: 200)
     }
