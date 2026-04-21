@@ -25,12 +25,8 @@ struct ContentView: View {
     }
     
     var body: some View {
-        
-        ZStack{
-            Image("Background")
-                .resizable()
-                .edgesIgnoringSafeArea(.all)
-            VStack(spacing: 8) {
+        NavigationStack {
+            VStack {
                 HStack(spacing: 16) {
                     Text("Level: \(currentLevel)")
                     Button("Increment") { currentLevel += 1 }
@@ -60,12 +56,12 @@ struct ContentView: View {
                     let point7: CGPoint = .init(x: contentWidth-35, y: contentHeight*0.8)
                     
                     // Thresholds for each segment (adjust as needed)
-//                    let t12 = 1
-//                    let t23 = 2
-//                    let t34 = 3
-//                    let t45 = 4
-//                    let t56 = 5
-//                    let t67 = 6
+                    //                    let t12 = 1
+                    //                    let t23 = 2
+                    //                    let t34 = 3
+                    //                    let t45 = 4
+                    //                    let t56 = 5
+                    //                    let t67 = 6
                     
                     let t11 = 1
                     let t12 = 2
@@ -211,20 +207,28 @@ struct ContentView: View {
                             Image("curved-text")
                                 .position(point7)
                             
-                            Image("Planet1")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 200, height: 200)
-                                .position(point7)
+                            NavigationLink(destination: QuizScreen()) {
+                                Image("Planet1")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 200, height: 200)
+                                    .position(point7)
+                            }
                         }
                         .frame(width: contentWidth, height: contentHeight + 200, alignment: .topLeading)
                     }
                     .frame(width: visibleWidth, height: contentHeight + 200)
                 }
                 .frame(height: 500)
+                
             }
-            .frame(height: 500)
-            
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(
+                Image("Background")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            )
         }
     }
 }
