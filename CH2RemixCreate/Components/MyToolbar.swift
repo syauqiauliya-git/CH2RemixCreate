@@ -16,7 +16,7 @@ struct MyToolbar: ToolbarContent {
                     .foregroundStyle(.gray)
             }
             .fixedSize()
-            .font(.title2)
+            .font(.title.bold())
             
             
         }
@@ -39,3 +39,5 @@ struct MyToolbar: ToolbarContent {
         }
     }
 }
+
+

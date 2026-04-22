@@ -5,9 +5,10 @@ struct Stock: Identifiable {
     let id = UUID()
     let symbol: String
     let name: String
-    let price: String
+    let price: Double
     let icon: String
     let color: Color
+    let prices: [PriceData]
 }
 
 
@@ -15,7 +16,9 @@ struct Stock: Identifiable {
 
 // MARK: - Screen
 struct StockListScreen: View {
+    @State private var selectedStock: Stock?
     var stocks: [Stock]
+    
     
     let columns = [
         GridItem(.flexible()),
@@ -24,55 +27,132 @@ struct StockListScreen: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(stocks) { stock in
-                        StockCard(stock: stock)
+            ZStack{
+                Image("Background")
+                    .resizable()
+                    .edgesIgnoringSafeArea(.all)
+                
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(stocks) { stock in
+                            StockCard(stock: stock)
+                                .onTapGesture {
+                                    selectedStock = stock
+                                }
+                        }
                     }
+                    .padding()
                 }
-                .padding()
-            }
-            .toolbar {
-                MyToolbar()
+                .toolbar {
+                    MyToolbar()
+                }
+                .sheet(item: $selectedStock) {stock in StockDetailSheet(stock: stock)
+                }
             }
         }
     }
 }
 
 #Preview {
-    // MARK: - Sample Data
     let stocks: [Stock] = [
-        Stock(symbol: "WBD", name: "Warner Bros", price: "12.34", icon: "film.fill", color: .blue),
-        Stock(symbol: "NFLX", name: "Netflix", price: "450.21", icon: "tv.fill", color: .red),
-        Stock(symbol: "HAS", name: "Hasbro", price: "65.10", icon: "gamecontroller.fill", color: .purple),
-        Stock(symbol: "MAT", name: "Mattel", price: "22.45", icon: "doll.fill", color: .pink),
-        Stock(symbol: "NTDOY", name: "Nintendo", price: "13.20", icon: "gamecontroller", color: .red),
-        Stock(symbol: "RBLX", name: "Roblox", price: "40.55", icon: "cube.fill", color: .blue),
-        Stock(symbol: "AAPL", name: "Apple", price: "175.30", icon: "applelogo", color: .green),
-        Stock(symbol: "SONY", name: "Sony PlayStation", price: "90.12", icon: "playstation.logo", color: .indigo),
-        Stock(symbol: "MCD", name: "McDonald's", price: "280.50", icon: "fork.knife", color: .yellow),
-        Stock(symbol: "DIS", name: "Disney", price: "100.75", icon: "sparkles", color: .blue),
-        Stock(symbol: "PARA", name: "Paramount", price: "14.88", icon: "star.fill", color: .purple),
-        Stock(symbol: "DASH", name: "DoorDash", price: "75.60", icon: "bicycle", color: .red),
-        Stock(symbol: "MSFT", name: "Microsoft", price: "330.90", icon: "square.grid.2x2.fill", color: .blue),
-        Stock(symbol: "EA", name: "Electronic Arts", price: "130.44", icon: "gamecontroller.fill", color: .orange),
-        Stock(symbol: "HSY", name: "Hershey", price: "210.22", icon: "gift.fill", color: .brown),
-        Stock(symbol: "MDLZ", name: "Mondelez", price: "72.15", icon: "takeoutbag.and.cup.and.straw.fill", color: .orange),
-        Stock(symbol: "PEP", name: "Pepsi", price: "180.10", icon: "drop.fill", color: .blue),
-        Stock(symbol: "SBUX", name: "Starbucks", price: "95.33", icon: "cup.and.saucer.fill", color: .green),
-        Stock(symbol: "NKE", name: "Nike", price: "110.77", icon: "figure.run", color: .black),
-        Stock(symbol: "CROX", name: "Crocs", price: "98.66", icon: "shoe.fill", color: .green),
-        
-        // Indo stocks
-        Stock(symbol: "CMRY", name: "Cimory", price: "1.250", icon: "carton.fill", color: .green),
-        Stock(symbol: "AMRT", name: "Alfamart", price: "2.950", icon: "storefront.fill", color: .red),
-        Stock(symbol: "GOTO", name: "GoTo", price: "85", icon: "car.fill", color: .green),
-        Stock(symbol: "ICBP", name: "Indofood", price: "10.200", icon: "fork.knife", color: .orange),
-        Stock(symbol: "MYOR", name: "Mayora", price: "2.400", icon: "cup.and.saucer.fill", color: .brown),
-        Stock(symbol: "GOOD", name: "Garudafood", price: "480", icon: "takeoutbag.and.cup.and.straw.fill", color: .orange),
-        Stock(symbol: "ULTJ", name: "Ultrajaya", price: "1.700", icon: "drop.fill", color: .blue),
-        Stock(symbol: "CAMP", name: "Campina", price: "350", icon: "snowflake", color: .cyan),
-        Stock(symbol: "UNVR", name: "Unilever", price: "4.500", icon: "sparkles", color: .blue)
+
+        Stock(symbol: "WBD", name: "Warner Bros", price: 12.34, icon: "film.fill", color: .blue, prices: [
+            PriceData(date: makeDate(1), price: 8),
+            PriceData(date: makeDate(2), price: 15),
+            PriceData(date: makeDate(3), price: 7),
+            PriceData(date: makeDate(4), price: 16),
+            PriceData(date: makeDate(5), price: 12.34),
+        ]),
+
+        Stock(symbol: "NFLX", name: "Netflix", price: 450.21, icon: "tv.fill", color: .red, prices: [
+            PriceData(date: makeDate(1), price: 380),
+            PriceData(date: makeDate(2), price: 520),
+            PriceData(date: makeDate(3), price: 360),
+            PriceData(date: makeDate(4), price: 550),
+            PriceData(date: makeDate(5), price: 450),
+        ]),
+
+        Stock(symbol: "HAS", name: "Hasbro", price: 65.10, icon: "gamecontroller.fill", color: .purple, prices: [
+            PriceData(date: makeDate(1), price: 50),
+            PriceData(date: makeDate(2), price: 80),
+            PriceData(date: makeDate(3), price: 48),
+            PriceData(date: makeDate(4), price: 85),
+            PriceData(date: makeDate(5), price: 65),
+        ]),
+
+        Stock(symbol: "MAT", name: "Mattel", price: 22.45, icon: "doll.fill", color: .pink, prices: [
+            PriceData(date: makeDate(1), price: 15),
+            PriceData(date: makeDate(2), price: 30),
+            PriceData(date: makeDate(3), price: 14),
+            PriceData(date: makeDate(4), price: 32),
+            PriceData(date: makeDate(5), price: 22.45),
+        ]),
+
+        Stock(symbol: "NTDOY", name: "Nintendo", price: 13.20, icon: "gamecontroller", color: .red, prices: [
+            PriceData(date: makeDate(1), price: 9),
+            PriceData(date: makeDate(2), price: 17),
+            PriceData(date: makeDate(3), price: 8),
+            PriceData(date: makeDate(4), price: 18),
+            PriceData(date: makeDate(5), price: 13.2),
+        ]),
+
+        Stock(symbol: "RBLX", name: "Roblox", price: 40.55, icon: "cube.fill", color: .blue, prices: [
+            PriceData(date: makeDate(1), price: 30),
+            PriceData(date: makeDate(2), price: 55),
+            PriceData(date: makeDate(3), price: 28),
+            PriceData(date: makeDate(4), price: 60),
+            PriceData(date: makeDate(5), price: 40.55),
+        ]),
+
+        Stock(symbol: "AAPL", name: "Apple", price: 175.30, icon: "applelogo", color: .green, prices: [
+            PriceData(date: makeDate(1), price: 140),
+            PriceData(date: makeDate(2), price: 200),
+            PriceData(date: makeDate(3), price: 130),
+            PriceData(date: makeDate(4), price: 210),
+            PriceData(date: makeDate(5), price: 175.3),
+        ]),
+
+        Stock(symbol: "SONY", name: "Sony PlayStation", price: 90.12, icon: "playstation.logo", color: .indigo, prices: [
+            PriceData(date: makeDate(1), price: 70),
+            PriceData(date: makeDate(2), price: 110),
+            PriceData(date: makeDate(3), price: 65),
+            PriceData(date: makeDate(4), price: 115),
+            PriceData(date: makeDate(5), price: 90),
+        ]),
+
+        Stock(symbol: "MCD", name: "McDonald's", price: 280.50, icon: "fork.knife", color: .yellow, prices: [
+            PriceData(date: makeDate(1), price: 240),
+            PriceData(date: makeDate(2), price: 310),
+            PriceData(date: makeDate(3), price: 230),
+            PriceData(date: makeDate(4), price: 320),
+            PriceData(date: makeDate(5), price: 280),
+        ]),
+
+        Stock(symbol: "DIS", name: "Disney", price: 100.75, icon: "sparkles", color: .blue, prices: [
+            PriceData(date: makeDate(1), price: 80),
+            PriceData(date: makeDate(2), price: 130),
+            PriceData(date: makeDate(3), price: 75),
+            PriceData(date: makeDate(4), price: 140),
+            PriceData(date: makeDate(5), price: 100.75),
+        ]),
+
+        // Indo (extra brutal 😈)
+
+        Stock(symbol: "GOTO", name: "GoTo", price: 85, icon: "car.fill", color: .green, prices: [
+            PriceData(date: makeDate(1), price: 50),
+            PriceData(date: makeDate(2), price: 120),
+            PriceData(date: makeDate(3), price: 40),
+            PriceData(date: makeDate(4), price: 140),
+            PriceData(date: makeDate(5), price: 85),
+        ]),
+
+        Stock(symbol: "ICBP", name: "Indofood", price: 1020, icon: "fork.knife", color: .orange, prices: [
+            PriceData(date: makeDate(1), price: 850),
+            PriceData(date: makeDate(2), price: 1150),
+            PriceData(date: makeDate(3), price: 800),
+            PriceData(date: makeDate(4), price: 1200),
+            PriceData(date: makeDate(5), price: 1020),
+        ])
     ]
 
     StockListScreen(stocks: stocks)
@@ -93,7 +173,7 @@ struct StockCard: View {
                 HStack {
                     Text(stock.symbol)
                     Spacer()
-                    Text(stock.price)
+                    Text("\(stock.price, specifier: "%.2f")")
                 }
                 .font(.title2.bold())
                 .foregroundStyle(.white)
@@ -105,7 +185,8 @@ struct StockCard: View {
                 
                 Spacer()
                 
-                ChartView(width: 150, height: 100)
+                ChartView(stockPrices: stock.prices, width: 150, height: 100)
+                Spacer()
             }
             .padding(.horizontal, 16)
             
@@ -114,7 +195,7 @@ struct StockCard: View {
                 .foregroundStyle(.white)
                 .padding(12)
         }
-        .frame(height: 200)
+        .frame(height: 238)
         .shadow(radius: 5)
     }
 }

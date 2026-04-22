@@ -17,28 +17,36 @@
 import Charts
 import SwiftUI
 
-struct SalesData: Identifiable {
+struct PriceData: Identifiable {
+    
+    
     let id = UUID()
-    let month: String
-    let revenue: Double
+    let date: Date
+    let price: Double
 }
 
-let salesData: [SalesData] = [
-    SalesData(month: "Jan", revenue: 1000),
-    SalesData(month: "Feb", revenue: 1500),
-    SalesData(month: "Mar", revenue: 1200),
-    SalesData(month: "Apr", revenue: 1800),
+func makeDate(_ day: Int) -> Date {
+    Calendar.current.date(from: DateComponents(year: 2026, month: 1, day: day))!
+}
+
+let pricesData: [PriceData] = [
+    PriceData(date: makeDate(1), price: 1000),
+    PriceData(date: makeDate(2), price: 1500),
+    PriceData(date: makeDate(3), price: 1200),
+    PriceData(date: makeDate(4), price: 1800),
+    PriceData(date: makeDate(5), price: 1600),
 ]
 
 struct ChartView: View {
+    var stockPrices: [PriceData]
     var width: CGFloat = 100
     var height: CGFloat = 100
     var body: some View {
         VStack{
-            Chart(salesData) {item in
+            Chart(stockPrices) {item in
                 AreaMark(
-                    x: .value("Month", item.month),
-                    y: .value("Revenue", item.revenue)
+                    x: .value("Date", item.date),
+                    y: .value("price", item.price)
                 )
                 
                 .foregroundStyle(
@@ -53,13 +61,13 @@ struct ChartView: View {
                     )
                 )
                 
-                LineMark(x: .value("Revenue", item.month),
-                         y: .value("Revenue", item.revenue)
+                LineMark(x: .value("Revenue", item.date),
+                         y: .value("Revenue", item.price)
                 )
                 .foregroundStyle(Color.green)
                 
                 RuleMark(
-                    y: .value("Current Price", 1200)
+                    y: .value("Current Price", stockPrices.last!.price)
                 )
                 .foregroundStyle(Color.green)
                 .lineStyle(StrokeStyle(lineWidth: 2, dash: [10,3]))
