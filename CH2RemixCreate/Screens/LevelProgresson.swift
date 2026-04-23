@@ -2,10 +2,8 @@
 import SwiftUI
 
 struct LevelProgressionMap: View {
-    // 1. Relocate the local view state here
     @State private var currentLevel: Int = 0
     
-    // 2. Transfer the localized rendering utilities
     private func directionColor(_ start: CGPoint, _ end: CGPoint) -> Color {
         end.y < start.y ? .green : .red
     }
@@ -64,23 +62,30 @@ struct LevelProgressionMap: View {
                                 let endNode = calculatedPoints[index]
                                 let isHalf = (index % 2 == 1)
                                 
-                                Circle()
-                                    .fill(Color.white)
-                                    .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                    .frame(width: isHalf ? 35 : 50, height: isHalf ? 35 : 50)
-                                    .position(calculatedPoints[index])
+                                NavigationLink(destination: QuizScreen(
+                                    isPassed: .constant(false),
+                                    quizId: .constant(mockQuiz.id),
+                                    quiz: mockQuiz
+                                )) {
+                                    Circle()
+                                        .fill(Color.white)
+                                        .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+                                        .frame(width: isHalf ? 35 : 50, height: isHalf ? 35 : 50)
+                                        .position(calculatedPoints[index])
+                                }
+                            
                             }
                             
                             Image("curved-text")
                                 .position(calculatedPoints[11])
                             
-                            NavigationLink(destination: QuizScreen()) {
-                                Image("Planet1")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 200, height: 200)
-                                    .position(calculatedPoints[11])
-                            }
+
+                            Image("Planet1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200, height: 200)
+                                .position(calculatedPoints[11])
+                            
                             
                         }
                         .frame(width: contentWidth, height: contentHeight + 200, alignment: .topLeading)
