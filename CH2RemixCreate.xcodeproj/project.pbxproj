@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8CC503AA2F98525A00A2B5DA /* XCAStocksAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 8CC503A92F98525A00A2B5DA /* XCAStocksAPI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		0045EAEA2F95CA4100060802 /* CH2RemixCreate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CH2RemixCreate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CC503AA2F98525A00A2B5DA /* XCAStocksAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = CH2RemixCreate;
 			packageProductDependencies = (
+				8CC503A92F98525A00A2B5DA /* XCAStocksAPI */,
 			);
 			productName = CH2RemixCreate;
 			productReference = 0045EAEA2F95CA4100060802 /* CH2RemixCreate.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 0045EAE12F95CA4100060802;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8CC503A82F98525A00A2B5DA /* XCRemoteSwiftPackageReference "XCAStocksAPI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0045EAEB2F95CA4100060802 /* Products */;
 			projectDirPath = "";
@@ -251,6 +260,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KP7V5MRL6Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -282,6 +292,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KP7V5MRL6Q;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -328,6 +339,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8CC503A82F98525A00A2B5DA /* XCRemoteSwiftPackageReference "XCAStocksAPI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alfianlosari/XCAStocksAPI.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8CC503A92F98525A00A2B5DA /* XCAStocksAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8CC503A82F98525A00A2B5DA /* XCRemoteSwiftPackageReference "XCAStocksAPI" */;
+			productName = XCAStocksAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0045EAE22F95CA4100060802 /* Project object */;
 }

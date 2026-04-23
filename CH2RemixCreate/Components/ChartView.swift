@@ -66,8 +66,10 @@ struct ChartView: View {
                 )
                 .foregroundStyle(Color.green)
                 
+                let averagePrice = stockPrices.map { $0.price }.reduce(0, +) / Double(stockPrices.count)
+
                 RuleMark(
-                    y: .value("Current Price", stockPrices.last!.price)
+                    y: .value("Average Price", averagePrice)
                 )
                 .foregroundStyle(Color.green)
                 .lineStyle(StrokeStyle(lineWidth: 2, dash: [10,3]))

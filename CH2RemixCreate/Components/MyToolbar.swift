@@ -14,6 +14,7 @@ struct MyToolbar: ToolbarContent {
                 Text("Stocks")
                 Text("16 April")
                     .foregroundStyle(.gray)
+                    .font(.title2)
             }
             .fixedSize()
             .font(.title.bold())
