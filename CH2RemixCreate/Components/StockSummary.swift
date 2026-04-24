@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct StockSummary: Identifiable {
+struct StockSummary: Identifiable{
     let id = UUID()
     let symbol: String
     let name: String
