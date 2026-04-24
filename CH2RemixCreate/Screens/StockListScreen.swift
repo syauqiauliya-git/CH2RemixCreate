@@ -19,14 +19,14 @@ struct StockListScreen: View {
     @State private var showSheet = false
     let stocks: [String]
     let icon: [String]
-
+    
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
     
     var color: Color = Color.black
-
+    
     var body: some View {
         NavigationStack{
             ZStack{
@@ -55,17 +55,17 @@ struct StockListScreen: View {
             }
             .sheet(isPresented: $showSheet){
                 if let stock = selectedStock {
-                        StockDetailSheet(tickerSymbol: stock,
-                                         color: cardColors[stocks.firstIndex(of: stock) ?? 0 % cardColors.count],
-                                         icon: icon[stocks.firstIndex(of: stock) ?? 0 % icon.count])
-                        .presentationBackground(.clear)
-//                        .presentationBackground(.gray)
-                    }
+                    StockDetailSheet(tickerSymbol: stock,
+                                     color: cardColors[stocks.firstIndex(of: stock) ?? 0 % cardColors.count],
+                                     icon: icon[stocks.firstIndex(of: stock) ?? 0 % icon.count])
+                    .presentationBackground(.clear)
+                    //                        .presentationBackground(.gray)
+                }
             }
         }
     }
 }
-        
+
 
 #Preview {
     let cardIcons: [String] = [
@@ -77,8 +77,8 @@ struct StockListScreen: View {
     ]
     
     
-
-
+    
+    
     StockListScreen(stocks: ["RBLX", "NFLX", "WBD", "AAPL", "TSLA"], icon: ["gamecontroller.fill",
                                                                             "tv.fill",
                                                                             "building.2.fill",
@@ -88,11 +88,11 @@ struct StockListScreen: View {
 
 let cardColors: [Color] = [
     Color.blue, // blue
-//    Color.brown, // brown/orange
+    //    Color.brown, // brown/orange
     Color.purple, // purple
     Color.orange, // red
     Color.black,
-//    Color.gray,// dark,
+    //    Color.gray,// dark,
     Color.yellow
 ]
 

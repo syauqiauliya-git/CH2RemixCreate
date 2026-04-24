@@ -11,11 +11,11 @@ import SwiftUI
 struct LessonScreen: View {
     
     @Environment(\.dismiss) private var dismiss
-    let currentLesson:Lesson
+    
+    @Binding var currentLesson:Lesson
     
     var body: some View {
-        
-        
+    
         
         //        let currentQuestion = quiz.questions[currentQuestionIndex]
         
@@ -78,10 +78,12 @@ struct LessonScreen: View {
             Spacer()
             
             Button(action: {
-                
+                 currentLesson.isPassed = true
+                print("Hello")
+                dismiss()
             }) {
                 HStack{
-                    Text("Next")
+                    Text("Finish")
                         .bold()
                     Image(systemName: "arrow.right")
                         .font(.system(size: 15, weight: .bold))
@@ -111,5 +113,5 @@ struct LessonScreen: View {
         description: "A stock is like owning a tiny piece of a company! If the company does well, your tiny piece becomes more valuable. It’s like sharing a pizza with friends, but instead of pizza, you share a company!",
         image: Image(systemName: "building.2.fill")
     )
-    LessonScreen(currentLesson: lesson)
+    LessonScreen(currentLesson: .constant(lesson))
 }

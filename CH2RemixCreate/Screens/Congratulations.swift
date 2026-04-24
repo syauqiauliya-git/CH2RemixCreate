@@ -122,10 +122,9 @@ struct Congratulations: View {
             // --- SCORE
             VStack(spacing: 8) {
                 Text("\(score)/4")
-                    .font(.system(size: 64, weight: .heavy, design: .rounded))
+                    .font(.system(size: 64, weight: .heavy))
                     .foregroundStyle(.primary)
                 
-                // Dynamic text and color based on the actual score
                 Text(score == 4 ? "Perfect!" : (score == 3 ? "Nice!" : "Keep Trying!"))
                     .font(.title3)
                     .fontWeight(.semibold)
@@ -138,8 +137,8 @@ struct Congratulations: View {
             Text("Press Anywhere to Continue")
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(.tertiary) // Very subtle so it doesn't distract
-                .padding(.bottom, 40)
+                .foregroundStyle(.tertiary)
+                .padding(.bottom, 75)
                 .onTapGesture {
                     dismiss()
                 }

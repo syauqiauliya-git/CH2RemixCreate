@@ -12,6 +12,7 @@ struct Lesson {
     let title: String
     let description: String
     var image: Image?
+    var isPassed: Bool = false
 }
 
 let mockLesson: [Lesson] = [
