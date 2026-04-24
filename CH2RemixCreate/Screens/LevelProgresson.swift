@@ -34,14 +34,14 @@ struct LevelProgressionMap: View {
                     let contentWidth = proxy.size.width * 2
                     let contentHeight = proxy.size.height
                     
-                    // Invoking your previously refactored external data structure
+                    // Invoking external data structure
                     let calculatedPoints = PointsCalculator.calculateCoordinates(
                         contentWidth: contentWidth,
                         contentHeight: contentHeight
                     )
                     
                     ScrollView(.horizontal, showsIndicators: false) {
-                        ZStack {
+                        ZStack (alignment: .topLeading) {
                             
                             
                             ForEach(1..<calculatedPoints.count-1, id: \.self) { index in
@@ -61,24 +61,19 @@ struct LevelProgressionMap: View {
                                 let startNode = calculatedPoints[index - 1]
                                 let endNode = calculatedPoints[index]
                                 
-                                // isHalf is true for odd indices: 1, 3, 5, 7, 9, 11
                                 let isHalf = (index % 2 == 1)
                                 
                                 if isHalf {
-                                    // --- SMALL NODES (Static, Unclickable) ---
+                                    // --- SMALL NODES ---
                                     Circle()
                                         .fill(Color.white)
                                         .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                         .frame(width: 35, height: 35)
-                                        .position(calculatedPoints[index])
-                                    
+                                        .offset(x: calculatedPoints[index].x - 17.5, y: calculatedPoints[index].y - 17.5)
                                 } else {
-                                    // --- LARGE NODES (Clickable Quiz Links) ---
-                                    
-                                    // Maps the even loop index (2, 4, 6, 8, 10) to the quiz array index (0, 1, 2, 3, 4)
+
                                     let quizIndex = (index / 2) - 1
                                     
-                                    // Safety check to ensure we don't crash if the number of points exceeds the number of quizzes
                                     if quizIndex >= 0 && quizIndex < mockQuizzes.count {
                                         NavigationLink(destination: QuizScreen(
                                             isPassed: .constant(false),
@@ -89,29 +84,21 @@ struct LevelProgressionMap: View {
                                                 .fill(Color.white)
                                                 .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                 .frame(width: 50, height: 50)
-                                                .position(calculatedPoints[index])
                                         }
-                                    } else {
-                                        // Fallback for any extra large nodes that don't have a matching quiz
-                                        Circle()
-                                            .fill(Color.white)
-                                            .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                            .frame(width: 50, height: 50)
-                                            .position(calculatedPoints[index])
+                                        .buttonStyle(.plain)
+                                        .offset(x: calculatedPoints[index].x - 25, y: calculatedPoints[index].y - 25)
                                     }
                                 }
                             }
                             
                             Image("curved-text")
-                                .position(calculatedPoints[11])
-                            
+                                .offset(x: calculatedPoints[11].x, y: calculatedPoints[11].y)
                             
                             Image("Planet1")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 200, height: 200)
-                                .position(calculatedPoints[11])
-                            
+                                .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y - 100)
                             
                         }
                         .frame(width: contentWidth, height: contentHeight + 200, alignment: .topLeading)

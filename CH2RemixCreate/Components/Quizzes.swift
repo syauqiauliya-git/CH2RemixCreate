@@ -23,7 +23,7 @@ struct Question {
 // MARK: - Mock Data Set 1: Stock Basics
 let mockQuestions1: [Question] = [
     Question(
-        question: "What does it mean when you buy a 'stock' in a company?",
+        question: "SET1 What does it mean when you buy a 'stock' in a company?",
         answers: ["You work there now", "You own a tiny piece of the company", "You get free toys", "You become the boss"],
         correctAnswer: "You own a tiny piece of the company",
         questionImage: Image(systemName: "chart.pie.fill")
@@ -51,7 +51,7 @@ let mockQuestions1: [Question] = [
 // MARK: - Mock Data Set 2: The Stock Market
 let mockQuestions2: [Question] = [
     Question(
-        question: "Where do people go to buy and sell stocks?",
+        question: "SET2 Where do people go to buy and sell stocks?",
         answers: ["The Supermarket", "The Toy Store", "The Stock Market", "The Bakery"],
         correctAnswer: "The Stock Market",
         questionImage: Image(systemName: "cart.fill")
