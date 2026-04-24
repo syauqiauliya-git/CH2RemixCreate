@@ -57,29 +57,55 @@ struct LevelProgressionMap: View {
                                 
                             }
                             
-                            ForEach(1..<calculatedPoints.count, id: \.self){ index in
+                            ForEach(1..<calculatedPoints.count, id: \.self) { index in
                                 let startNode = calculatedPoints[index - 1]
                                 let endNode = calculatedPoints[index]
+                                
+                                // isHalf is true for odd indices: 1, 3, 5, 7, 9, 11
                                 let isHalf = (index % 2 == 1)
                                 
-                                NavigationLink(destination: QuizScreen(
-                                    isPassed: .constant(false),
-                                    quizId: .constant(mockQuiz.id),
-                                    quiz: mockQuiz
-                                )) {
+                                if isHalf {
+                                    // --- SMALL NODES (Static, Unclickable) ---
                                     Circle()
                                         .fill(Color.white)
                                         .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                        .frame(width: isHalf ? 35 : 50, height: isHalf ? 35 : 50)
+                                        .frame(width: 35, height: 35)
                                         .position(calculatedPoints[index])
+                                    
+                                } else {
+                                    // --- LARGE NODES (Clickable Quiz Links) ---
+                                    
+                                    // Maps the even loop index (2, 4, 6, 8, 10) to the quiz array index (0, 1, 2, 3, 4)
+                                    let quizIndex = (index / 2) - 1
+                                    
+                                    // Safety check to ensure we don't crash if the number of points exceeds the number of quizzes
+                                    if quizIndex >= 0 && quizIndex < mockQuizzes.count {
+                                        NavigationLink(destination: QuizScreen(
+                                            isPassed: .constant(false),
+                                            quizId: .constant(mockQuizzes[quizIndex].id),
+                                            quiz: mockQuizzes[quizIndex]
+                                        )) {
+                                            Circle()
+                                                .fill(Color.white)
+                                                .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+                                                .frame(width: 50, height: 50)
+                                                .position(calculatedPoints[index])
+                                        }
+                                    } else {
+                                        // Fallback for any extra large nodes that don't have a matching quiz
+                                        Circle()
+                                            .fill(Color.white)
+                                            .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+                                            .frame(width: 50, height: 50)
+                                            .position(calculatedPoints[index])
+                                    }
                                 }
-                            
                             }
                             
                             Image("curved-text")
                                 .position(calculatedPoints[11])
                             
-
+                            
                             Image("Planet1")
                                 .resizable()
                                 .scaledToFit()

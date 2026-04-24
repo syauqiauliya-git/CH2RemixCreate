@@ -122,7 +122,7 @@ struct QuizScreen: View {
 #Preview {
     QuizScreen(
         isPassed: .constant(false),
-        quizId: .constant(mockQuiz.id),
-        quiz: mockQuiz
+        quizId: .constant(mockQuizzes[0].id),
+        quiz: mockQuizzes[0]
     )
 }
