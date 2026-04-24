@@ -10,12 +10,11 @@ import SwiftUI
 
 struct ContentView: View {
     
+    
     var body: some View {
-//        StockListScreen(stocks: ["RBLX", "NFLX", "WBD", "AAPL", "TSLA"])
+        LevelProgressionMap()
     }
     
-    
-  
 }
 
 #Preview {

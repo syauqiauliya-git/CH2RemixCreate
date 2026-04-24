@@ -10,7 +10,7 @@ import SwiftUI
 struct Quiz: Identifiable {
     let id: UUID
     let questions: [Question]
-    let isPassed: Bool
+    var isPassed: Bool
 }
 
 struct Question {
@@ -77,7 +77,7 @@ let mockQuestions2: [Question] = [
 ]
 
 // MARK: - 5 Demo Quizzes
-let mockQuizzes: [Quiz] = [
+var mockQuizzes: [Quiz] = [
     Quiz(
         id: UUID(),
         questions: mockQuestions1,

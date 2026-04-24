@@ -8,10 +8,7 @@ import SwiftUI
 
 
 struct QuizScreen: View {
-    @Binding var isPassed: Bool
-    @Binding var quizId: UUID
-    
-    let quiz: Quiz
+    @Binding var quiz: Quiz
     
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: String? = nil
@@ -90,6 +87,9 @@ struct QuizScreen: View {
                                 selectedAnswer = nil
                                 isAnswerLocked = false
                             } else {
+                                if scoreCount > 2 {
+                                    quiz.isPassed = true
+                                }
                                 isCongratulationsPresented = true
                             }
                         }
@@ -120,9 +120,5 @@ struct QuizScreen: View {
 }
 
 #Preview {
-    QuizScreen(
-        isPassed: .constant(false),
-        quizId: .constant(mockQuizzes[0].id),
-        quiz: mockQuizzes[0]
-    )
+    QuizScreen(quiz: .constant(mockQuizzes[0]))
 }

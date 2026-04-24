@@ -1,8 +1,19 @@
 // LevelProgressionMap.swift
 import SwiftUI
 
+
+
 struct LevelProgressionMap: View {
-    @State private var currentLevel: Int = 0
+    @State private var quizzes: [Quiz] = mockQuizzes
+    
+    private var currentLevel: Int {
+        var highest = 0
+        for (i, quiz) in quizzes.enumerated() {
+            if quiz.isPassed { highest = i + 1 }
+        }
+        return highest
+    }
+
     
     private func directionColor(_ start: CGPoint, _ end: CGPoint) -> Color {
         end.y < start.y ? .green : .red
@@ -15,19 +26,20 @@ struct LevelProgressionMap: View {
     private func circleStrokeColor(threshold: Int, incomingStart: CGPoint, incomingEnd: CGPoint) -> Color {
         currentLevel >= threshold ? directionColor(incomingStart, incomingEnd) : .gray
     }
+
     
     var body: some View {
         NavigationStack {
             VStack {
-                HStack(spacing: 16) {
-                    Text("Level: \(currentLevel)")
-                        .font(.headline)
-                    Button("Increment") { currentLevel += 1 }
-                        .buttonStyle(.borderedProminent)
-                    Button("Reset") { currentLevel = 0 }
-                        .buttonStyle(.bordered)
-                }
-                .padding(.horizontal)
+//                HStack(spacing: 16) {
+//                    Text("Level: \(currentLevel)")
+//                        .font(.headline)
+//                    Button("Increment") { currentLevel += 1 }
+//                        .buttonStyle(.borderedProminent)
+//                    Button("Reset") { currentLevel = 0 }
+//                        .buttonStyle(.bordered)
+//                }
+//                .padding(.horizontal)
                 
                 GeometryReader { proxy in
                     let visibleWidth = proxy.size.width
@@ -58,8 +70,10 @@ struct LevelProgressionMap: View {
                             }
                             
                             ForEach(1..<calculatedPoints.count, id: \.self) { index in
+                                
                                 let startNode = calculatedPoints[index - 1]
                                 let endNode = calculatedPoints[index]
+                                
                                 
                                 let isHalf = (index % 2 == 1)
                                 
@@ -74,11 +88,9 @@ struct LevelProgressionMap: View {
 
                                     let quizIndex = (index / 2) - 1
                                     
-                                    if quizIndex >= 0 && quizIndex < mockQuizzes.count {
+                                    if quizIndex >= 0 && quizIndex < mockQuizzes.count {                 
                                         NavigationLink(destination: QuizScreen(
-                                            isPassed: .constant(false),
-                                            quizId: .constant(mockQuizzes[quizIndex].id),
-                                            quiz: mockQuizzes[quizIndex]
+                                            quiz: $quizzes[quizIndex]
                                         )) {
                                             Circle()
                                                 .fill(Color.white)
@@ -121,3 +133,6 @@ struct LevelProgressionMap: View {
 #Preview {
     LevelProgressionMap()
 }
+
+
+//rsthtsrhsrhrh
