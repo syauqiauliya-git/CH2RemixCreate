@@ -13,33 +13,33 @@ struct LevelProgressionMap: View {
         }
         return highest
     }
-
+    
     
     private func directionColor(_ start: CGPoint, _ end: CGPoint) -> Color {
         end.y < start.y ? .green : .red
     }
     
     private func segmentColor(_ start: CGPoint, _ end: CGPoint, threshold: Int) -> Color {
-        currentLevel >= threshold ? directionColor(start, end) : .gray
+        currentLevel * 2 >= threshold ? directionColor(start, end) : .gray
     }
     
     private func circleStrokeColor(threshold: Int, incomingStart: CGPoint, incomingEnd: CGPoint) -> Color {
-        currentLevel >= threshold ? directionColor(incomingStart, incomingEnd) : .gray
+        currentLevel * 2 >= threshold ? directionColor(incomingStart, incomingEnd) : .gray
     }
-
+    
     
     var body: some View {
         NavigationStack {
             VStack {
-//                HStack(spacing: 16) {
-//                    Text("Level: \(currentLevel)")
-//                        .font(.headline)
-//                    Button("Increment") { currentLevel += 1 }
-//                        .buttonStyle(.borderedProminent)
-//                    Button("Reset") { currentLevel = 0 }
-//                        .buttonStyle(.bordered)
-//                }
-//                .padding(.horizontal)
+                //                HStack(spacing: 16) {
+                //                    Text("Level: \(currentLevel)")
+                //                        .font(.headline)
+                //                    Button("Increment") { currentLevel += 1 }
+                //                        .buttonStyle(.borderedProminent)
+                //                    Button("Reset") { currentLevel = 0 }
+                //                        .buttonStyle(.bordered)
+                //                }
+                //                .padding(.horizontal)
                 
                 GeometryReader { proxy in
                     let visibleWidth = proxy.size.width
@@ -85,7 +85,7 @@ struct LevelProgressionMap: View {
                                         .frame(width: 35, height: 35)
                                         .offset(x: calculatedPoints[index].x - 17.5, y: calculatedPoints[index].y - 17.5)
                                 } else {
-
+                                    
                                     let quizIndex = (index / 2) - 1
                                     
                                     if quizIndex >= 0 && quizIndex < mockQuizzes.count {                 
