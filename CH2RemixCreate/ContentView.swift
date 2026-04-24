@@ -10,14 +10,23 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State var isGraduated: Bool
     
     var body: some View {
-        LevelProgressionMap()
+        if (isGraduated) {
+            StockListScreen(stocks: ["RBLX", "NFLX", "WBD", "AAPL", "TSLA"], icon: ["gamecontroller.fill",
+                                                                                    "tv.fill",
+                                                                                    "building.2.fill",
+                                                                                    "applelogo",
+                                                                                    "car.fill"])
+        } else {
+            LevelProgressionMap(isGraduated: $isGraduated)
+        }
     }
     
 }
 
 #Preview {
-    ContentView()
+    ContentView(isGraduated: false)
 }
 

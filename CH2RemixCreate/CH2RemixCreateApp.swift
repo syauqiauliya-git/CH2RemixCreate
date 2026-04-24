@@ -11,7 +11,7 @@ import SwiftUI
 struct CH2RemixCreateApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(isGraduated: false)
         }
     }
 }

@@ -7,6 +7,8 @@ struct LevelProgressionMap: View {
     @State private var quizzes: [Quiz] = mockQuizzes
     @State private var lessons: [Lesson] = mockLesson
     @State private var showLockedPopup = false
+    @Binding var isGraduated: Bool
+
     
     
     private var currentLevel: Int {
@@ -18,12 +20,13 @@ struct LevelProgressionMap: View {
     }
     
     
-    private func directionColor(start: CGPoint,end: CGPoint) -> Color {
-        end.y < start.y ? .green : .red
+    private func directionColor(start: CGPoint, end: CGPoint) -> Color {
+        Color(hex: "7C5CBF")
     }
     
     private func isReached(levelIndex: Int) -> Bool {
         let isLessonPoint = (levelIndex % 2 == 1)
+        
         if isLessonPoint {
             let lessonIndex = (levelIndex - 1) / 2
             return lessonIndex < lessons.count && lessons[lessonIndex].isPassed
@@ -34,11 +37,13 @@ struct LevelProgressionMap: View {
     }
     
     private func segmentColor(start: CGPoint, end: CGPoint, threshold: Int) -> Color {
-        isUnlocked(levelIndex: threshold) ? directionColor(start: start, end: end) : .gray
+        isUnlocked(levelIndex: threshold) ? directionColor(start: start, end: end) : Color(hex: "2D2F4A")
     }
     
     private func circleStrokeColor(threshold: Int, incomingStart: CGPoint, incomingEnd: CGPoint) -> Color {
-        isReached(levelIndex: threshold) ? directionColor(start: incomingStart, end: incomingEnd) : .gray
+        if isReached(levelIndex: threshold) { return Color(hex: "7C5CBF") }
+        if isUnlocked(levelIndex: threshold) { return Color(hex: "C9F55F") }
+        return Color(hex: "2D2F4A")
     }
     
     private func isUnlocked(levelIndex: Int) -> Bool {
@@ -56,12 +61,30 @@ struct LevelProgressionMap: View {
                     HStack(spacing: 16) {
                         Text("Level: \(currentLevel)")
                             .font(.headline)
-                        Button("Increment") { quizzes[currentLevel].isPassed = true }
-                            .buttonStyle(.borderedProminent)
-                        Button("Reset") {
-                            for index in quizzes.indices {
-                                quizzes[index].isPassed = false
+                        Button("Increment") {
+                            // find first unpassed node in sequence: lesson0, quiz0, lesson1, quiz1...
+                            let totalSteps = lessons.count + quizzes.count
+                            for step in 0..<totalSteps {
+                                if step % 2 == 0 {
+                                    let lessonIndex = step / 2
+                                    if !lessons[lessonIndex].isPassed {
+                                        lessons[lessonIndex].isPassed = true
+                                        return
+                                    }
+                                } else {
+                                    let quizIndex = step / 2
+                                    if !quizzes[quizIndex].isPassed {
+                                        quizzes[quizIndex].isPassed = true
+                                        return
+                                    }
+                                }
                             }
+                        }
+                        .buttonStyle(.borderedProminent)
+
+                        Button("Reset") {
+                            for index in quizzes.indices { quizzes[index].isPassed = false }
+                            for index in lessons.indices { lessons[index].isPassed = false }
                         }
                         .buttonStyle(.bordered)
                     }
@@ -113,7 +136,7 @@ struct LevelProgressionMap: View {
                                                     currentLesson: $lessons[lessonIndex]
                                                 )) {
                                                     Circle()
-                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : Color.white)
+                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                         .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                         .frame(width: 35, height: 35)
                                                 }
@@ -133,7 +156,7 @@ struct LevelProgressionMap: View {
                                                 
                                             }) {
                                                 Circle()
-                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : Color.white)
+                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                     .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                     .frame(width: 35, height: 35)
                                                 
@@ -153,7 +176,7 @@ struct LevelProgressionMap: View {
                                                     quiz: $quizzes[quizIndex]
                                                 )) {
                                                     Circle()
-                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : Color.white)
+                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                         .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                         .frame(width: 50, height: 50)
                                                 }
@@ -172,7 +195,7 @@ struct LevelProgressionMap: View {
                                                 
                                             }) {
                                                 Circle()
-                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : Color.white)
+                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                     .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                     .frame(width: 50, height: 50)
                                             }
@@ -223,7 +246,7 @@ struct LevelProgressionMap: View {
 }
 
 #Preview {
-    LevelProgressionMap()
+    LevelProgressionMap(isGraduated: .constant(false))
 }
 
 
