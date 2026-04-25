@@ -17,8 +17,8 @@ struct stockSummary: Identifiable{
 struct StockListScreen: View {
     @State private var selectedStock: String? = nil
     @State private var showSheet = false
-    let stocks: [String]
-    let icon: [String]
+    let stocks: [String] = stockListDummyData
+    let icon: [String] = stockListDummyIcon
     
     let columns = [
         GridItem(.flexible()),
@@ -79,11 +79,7 @@ struct StockListScreen: View {
     
     
     
-    StockListScreen(stocks: ["RBLX", "NFLX", "WBD", "AAPL", "TSLA"], icon: ["gamecontroller.fill",
-                                                                            "tv.fill",
-                                                                            "building.2.fill",
-                                                                            "applelogo",
-                                                                            "car.fill"])
+    StockListScreen()
 }
 
 let cardColors: [Color] = [

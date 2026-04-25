@@ -8,6 +8,7 @@ struct LevelProgressionMap: View {
     @State private var lessons: [Lesson] = mockLesson
     @State private var showLockedPopup = false
     @Binding var isGraduated: Bool
+    @Binding var selectedTab: Int
 
     
     
@@ -205,11 +206,32 @@ struct LevelProgressionMap: View {
                                     }
                                 }
                                 
-                                Image("Planet1")
+                                let planet = Image("Planet1")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 200, height: 200)
-                                    .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y - 100)
+
+                                Group {
+                                    if isGraduated {
+                                        Button {
+                                            selectedTab = 1 // 👈 pindah ke tab Stocks
+                                        } label: {
+                                            planet
+                                        }
+                                        .buttonStyle(.plain)
+                                        
+                                    } else {
+                                        ZStack{
+                                            planet
+                                                .opacity(0.5)
+                                            Image(systemName: "lock.fill")
+                                                .font(.largeTitle)
+                                                .foregroundColor(.white)
+                                        }
+                                        
+                                    }
+                                }
+                                .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y - 100)
                                 
                                 Image("JumpIn")
                                     .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y-150)
@@ -246,7 +268,7 @@ struct LevelProgressionMap: View {
 }
 
 #Preview {
-    LevelProgressionMap(isGraduated: .constant(false))
+    LevelProgressionMap(isGraduated: .constant(true), selectedTab: .constant(0))
 }
 
 

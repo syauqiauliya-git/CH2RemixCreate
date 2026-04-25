@@ -1,336 +1,254 @@
-////
-////  StockDetailSheetScreen.swift
-////  CH2RemixCreate
-////
-////  Created by Gleenryan on 21/04/26.
-////
-//
+//// LevelProgressionMap.swift
 //import SwiftUI
 //
 //
-//struct StockDetailSheet2: View {
-//    let stock: Stock
 //
-//    @Environment(\.dismiss) var dismiss
+//struct LevelProgressionMap: View {
+//    @State private var quizzes: [Quiz] = mockQuizzes
+//    @State private var lessons: [Lesson] = mockLesson
+//    @State private var showLockedPopup = false
+//    @Binding var isGraduated: Bool
 //
-//    var body: some View {
-//        NavigationStack{
-//
-//            VStack(alignment: .leading){
-//                HStack(alignment: .center){
-//                    Image(systemName: stock.icon)
-//                        .font(.system(size: 40))
-//                        .foregroundStyle(.white)
-//                        .padding(12)
-//                    VStack (alignment: .leading){
-//                        Text(stock.symbol)
-//                            .font(.system(size: 50))
-//                        Text(stock.name)
-//                            .foregroundStyle(.gray)
-//                    }
-//                    .bold()
-//
-//                }
-//                .frame(maxWidth: .infinity)
-//
-//                HStack{
-//                    Text("\(stock.price, specifier: "%.2f")")
-//                        .font(.system(size: 35))
-//                    Text("2.75%")
-//                        .foregroundStyle(.green)
-//
-//                }
-//                .bold()
-//                Text("Daily")
-//                //            Text("CHART")
-//                ChartView(stockPrices: stock.prices, width: .infinity, height: 300)
-//                Spacer()
-//                HStack{
-//                    StockDetailInfo2()
-//                    StockDetailInfo2()
-//                }
-//                .padding(.horizontal, 10)
-//                HStack{
-//                    StockDetailInfo2()
-//                    StockDetailInfo2()
-//                }
-//                .padding(.horizontal, 10)
-//                Spacer()
-//                Spacer()
-//
-//
-//                //Nanti ini bikin struct aja karna repeatable
-//
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .frame(maxHeight: .infinity, alignment: .top)
-//            .toolbar{
-//                ToolbarItem(placement: .topBarLeading){
-//                    Button{
-//                        dismiss()
-//                    }label: {
-//                        Image(systemName: "xmark")
-//                    }
-//                }
-//
-//                ToolbarItem{
-//                    Button{
-//                        dismiss()
-//                    }label: {
-//                        Image(systemName: "square.and.arrow.up")
-//                    }
-//                }
-//
-//            }
+//    
+//    
+//    private var currentLevel: Int {
+//        var highest = 0
+//        for (i, quiz) in quizzes.enumerated() {
+//            if quiz.isPassed { highest = i + 1 }
 //        }
-//
+//        return highest
 //    }
+//    
+//    
+//    private func directionColor(start: CGPoint, end: CGPoint) -> Color {
+//        Color(hex: "7C5CBF")
+//    }
+//    
+//    private func isReached(levelIndex: Int) -> Bool {
+//        let isLessonPoint = (levelIndex % 2 == 1)
+//        
+//        if isLessonPoint {
+//            let lessonIndex = (levelIndex - 1) / 2
+//            return lessonIndex < lessons.count && lessons[lessonIndex].isPassed
+//        } else {
+//            let quizIndex = (levelIndex / 2) - 1
+//            return quizIndex < quizzes.count && quizzes[quizIndex].isPassed
 //        }
+//    }
+//    
+//    private func segmentColor(start: CGPoint, end: CGPoint, threshold: Int) -> Color {
+//        isUnlocked(levelIndex: threshold) ? directionColor(start: start, end: end) : Color(hex: "2D2F4A")
+//    }
+//    
+//    private func circleStrokeColor(threshold: Int, incomingStart: CGPoint, incomingEnd: CGPoint) -> Color {
+//        if isReached(levelIndex: threshold) { return Color(hex: "7C5CBF") }
+//        if isUnlocked(levelIndex: threshold) { return Color(hex: "C9F55F") }
+//        return Color(hex: "2D2F4A")
+//    }
+//    
+//    private func isUnlocked(levelIndex: Int) -> Bool {
+//        if levelIndex <= 1 {
+//            return true
+//        }
+//        return isReached(levelIndex: levelIndex - 1)
+//    }
+//    
+//    
+//    var body: some View {
+//        ZStack {
+//            NavigationStack {
+//                VStack {
+//                    HStack(spacing: 16) {
+//                        Text("Level: \(currentLevel)")
+//                            .font(.headline)
+//                        Button("Increment") {
+//                            // find first unpassed node in sequence: lesson0, quiz0, lesson1, quiz1...
+//                            let totalSteps = lessons.count + quizzes.count
+//                            for step in 0..<totalSteps {
+//                                if step % 2 == 0 {
+//                                    let lessonIndex = step / 2
+//                                    if !lessons[lessonIndex].isPassed {
+//                                        lessons[lessonIndex].isPassed = true
+//                                        return
+//                                    }
+//                                } else {
+//                                    let quizIndex = step / 2
+//                                    if !quizzes[quizIndex].isPassed {
+//                                        quizzes[quizIndex].isPassed = true
+//                                        return
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        .buttonStyle(.borderedProminent)
+//
+//                        Button("Reset") {
+//                            for index in quizzes.indices { quizzes[index].isPassed = false }
+//                            for index in lessons.indices { lessons[index].isPassed = false }
+//                        }
+//                        .buttonStyle(.bordered)
+//                    }
+//                    .padding(.horizontal)
+//                    
+//                    GeometryReader { proxy in
+//                        let visibleWidth = proxy.size.width
+//                        let contentWidth = proxy.size.width * 2
+//                        let contentHeight = proxy.size.height
+//                        
+//                        // Invoking external data structure
+//                        let calculatedPoints = PointsCalculator.calculateCoordinates(
+//                            contentWidth: contentWidth,
+//                            contentHeight: contentHeight
+//                        )
+//                        
+//                        ScrollView(.horizontal, showsIndicators: false) {
+//                            ZStack (alignment: .topLeading) {
+//                                
+//                                
+//                                ForEach(1..<calculatedPoints.count-1, id: \.self) { index in
+//                                    let startNode = calculatedPoints[index - 1]
+//                                    let endNode = calculatedPoints[index]
+//                                    
+//                                    
+//                                    Path { path in
+//                                        path.move(to: startNode)
+//                                        path.addLine(to: endNode)
+//                                    }
+//                                    .stroke(segmentColor(start: startNode, end: endNode, threshold: index), lineWidth: 10)
+//                                    
+//                                }
+//                                
+//                                ForEach(1..<calculatedPoints.count, id: \.self) { index in
+//                                    
+//                                    let startNode = calculatedPoints[index - 1]
+//                                    let endNode = calculatedPoints[index]
+//                                    
+//                                    let isHalf = (index % 2 == 1)
+//                                    
+//                                    if isHalf {
+//                                        // --- LESSON NODES ---
+//                                        
+//                                        let lessonIndex = (index - 1) / 2
+//                                        
+//                                        if isUnlocked(levelIndex: index){
+//                                            if lessonIndex >= 0 && lessonIndex < lessons.count {
+//                                                NavigationLink(destination: LessonScreen (
+//                                                    currentLesson: $lessons[lessonIndex]
+//                                                )) {
+//                                                    Circle()
+//                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+//                                                        .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+//                                                        .frame(width: 35, height: 35)
+//                                                }
+//                                                .buttonStyle(.plain)
+//                                                .offset(x: calculatedPoints[index].x - 17.5, y: calculatedPoints[index].y - 17.5)
+//                                            }
+//                                            
+//                                        } else {
+//                                            
+//                                            Button(action: {
+//                                                showLockedPopup = true
+//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+//                                                    withAnimation {
+//                                                        showLockedPopup = false
+//                                                    }
+//                                                }
+//                                                
+//                                            }) {
+//                                                Circle()
+//                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+//                                                    .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+//                                                    .frame(width: 35, height: 35)
+//                                                
+//                                            }
+//                                            .offset(x: calculatedPoints[index].x - 17.5, y: calculatedPoints[index].y - 17.5)
+//                                        }
+//                                        
+//                                    } else {
+//                                        
+//                                        // --- QUIZ NODES ---
+//                                        
+//                                        let quizIndex = (index / 2) - 1
+//                                        
+//                                        if isUnlocked(levelIndex: index){
+//                                            if quizIndex >= 0 && quizIndex < mockQuizzes.count {
+//                                                NavigationLink(destination: QuizScreen(
+//                                                    quiz: $quizzes[quizIndex]
+//                                                )) {
+//                                                    Circle()
+//                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+//                                                        .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+//                                                        .frame(width: 50, height: 50)
+//                                                }
+//                                                .buttonStyle(.plain)
+//                                                .offset(x: calculatedPoints[index].x - 25, y: calculatedPoints[index].y - 25)
+//                                            }
+//                                        } else {
+//                                            
+//                                            Button (action: {
+//                                                showLockedPopup = true
+//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+//                                                    withAnimation {
+//                                                        showLockedPopup = false
+//                                                    }
+//                                                }
+//                                                
+//                                            }) {
+//                                                Circle()
+//                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+//                                                    .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
+//                                                    .frame(width: 50, height: 50)
+//                                            }
+//                                            .offset(x: calculatedPoints[index].x - 25, y: calculatedPoints[index].y - 25)
+//                                        }
+//                                        
+//                                    }
+//                                }
+//                                
+//                                Image("Planet1")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(width: 200, height: 200)
+//                                    .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y - 100)
+//                                
+//                                Image("JumpIn")
+//                                    .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y-150)
+//                                
+//                                
+//                            }
+//                            .frame(width: contentWidth, height: contentHeight + 200, alignment: .topLeading)
+//                        }
+//                        .frame(width: visibleWidth, height: contentHeight + 200)
+//                    }
+//                    .frame(height: 500)
+//                }
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                .background(
+//                    Image("Background")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .ignoresSafeArea()
+//                )
+//            }
+//            
+//            // Locked Popup
+//            if showLockedPopup {
+//                Text("Locked Level")
+//                    .padding()
+//                    .background(Color.black.opacity(0.8))
+//                    .foregroundColor(.white)
+//                    .cornerRadius(10)
+//                    .transition(.opacity) // Smooth transition
+//                    .zIndex(1) // Ensure it's on top
+//            }
+//        }
+//    }
+//}
 //
 //#Preview {
-//
-//
-//    let stocks1 = Stock(symbol: "GOTO", name: "GoJek Tokopedia", price: 80, icon: "car.fill", color: .green, prices: [
-//        PriceData(date: makeDate(1), price: 80),
-//        PriceData(date: makeDate(2), price: 40),
-//        PriceData(date: makeDate(3), price: 78),
-//        PriceData(date: makeDate(4), price: 84),
-//        PriceData(date: makeDate(5), price: 80),
-//    ])
-//
-//    StockDetailSheet2(stock: stocks1)
+//    LevelProgressionMap(isGraduated: .constant(false))
 //}
 //
 //
-//struct StockDetailInfo2:View {
-//    var body: some View {
-//        var detailTitle: String = "High"
-//        var detailValue: String = "80"
-//        HStack{
-////            Spacer()
-//            Text(detailTitle)
-//                .foregroundStyle(.gray)
-//            Spacer()
-//            Text(detailValue)
-//                .font(.largeTitle)
-//        }
-//        .bold()
-//        .padding(10)
-//        .frame(maxWidth: 150)
-//    }
-//}
-//
-//
-////
-////  backupdetail.swift
-////  CH2RemixCreate
-////
-////  Created by Gleenryan on 22/04/26.
-////
-//
-////import SwiftUI
-////
-////// MARK: - Model
-////struct Stock: Identifiable {
-////    let id = UUID()
-////    let symbol: String
-////    let name: String
-////    let price: Double
-////    let icon: String
-////    let color: Color
-////    let prices: [PriceData]
-////}
-////
-////
-////
-////
-////// MARK: - Screen
-////struct StockListScreen: View {
-////    @State private var selectedStock: Stock?
-////    var stocks: [Stock]
-////
-////
-////    let columns = [
-////        GridItem(.flexible()),
-////        GridItem(.flexible())
-////    ]
-////
-////    var body: some View {
-////        NavigationStack {
-////            ZStack{
-////                Image("Background")
-////                    .resizable()
-////                    .edgesIgnoringSafeArea(.all)
-////
-////                ScrollView {
-////                    LazyVGrid(columns: columns, spacing: 10) {
-////                        ForEach(stocks) { stock in
-////                            StockCard(stock: stock)
-////                                .onTapGesture {
-////                                    selectedStock = stock
-////                                }
-////                        }
-////                    }
-////                    .padding()
-////                }
-////                .toolbar {
-////                    MyToolbar()
-////                }
-////                .sheet(item: $selectedStock) {stock in StockDetailSheet2(stock: stock)
-////                }
-////            }
-////        }
-////    }
-////}
-////
-////#Preview {
-////    let stocklist: [String] = ["RBLX", "NFLX", "WBD"]
-////
-////    let stocks: [Stock] = [
-////
-////        Stock(symbol: "WBD", name: "Warner Bros", price: 12.34, icon: "film.fill", color: .blue, prices: [
-////            PriceData(date: makeDate(1), price: 8),
-////            PriceData(date: makeDate(2), price: 15),
-////            PriceData(date: makeDate(3), price: 7),
-////            PriceData(date: makeDate(4), price: 16),
-////            PriceData(date: makeDate(5), price: 12.34),
-////        ]),
-////
-////        Stock(symbol: "NFLX", name: "Netflix", price: 450.21, icon: "tv.fill", color: .red, prices: [
-////            PriceData(date: makeDate(1), price: 380),
-////            PriceData(date: makeDate(2), price: 520),
-////            PriceData(date: makeDate(3), price: 560),
-////            PriceData(date: makeDate(4), price: 550),
-////            PriceData(date: makeDate(5), price: 450),
-////        ]),
-////
-////        Stock(symbol: "HAS", name: "Hasbro", price: 65.10, icon: "gamecontroller.fill", color: .purple, prices: [
-////            PriceData(date: makeDate(1), price: 50),
-////            PriceData(date: makeDate(2), price: 80),
-////            PriceData(date: makeDate(3), price: 48),
-////            PriceData(date: makeDate(4), price: 85),
-////            PriceData(date: makeDate(5), price: 65),
-////        ]),
-////
-////        Stock(symbol: "MAT", name: "Mattel", price: 22.45, icon: "doll.fill", color: .pink, prices: [
-////            PriceData(date: makeDate(1), price: 15),
-////            PriceData(date: makeDate(2), price: 30),
-////            PriceData(date: makeDate(3), price: 14),
-////            PriceData(date: makeDate(4), price: 32),
-////            PriceData(date: makeDate(5), price: 22.45),
-////        ]),
-////
-////        Stock(symbol: "NTDOY", name: "Nintendo", price: 13.20, icon: "gamecontroller", color: .red, prices: [
-////            PriceData(date: makeDate(1), price: 9),
-////            PriceData(date: makeDate(2), price: 17),
-////            PriceData(date: makeDate(3), price: 8),
-////            PriceData(date: makeDate(4), price: 18),
-////            PriceData(date: makeDate(5), price: 13.2),
-////        ]),
-////
-////        Stock(symbol: "RBLX", name: "Roblox", price: 40.55, icon: "cube.fill", color: .blue, prices: [
-////            PriceData(date: makeDate(1), price: 30),
-////            PriceData(date: makeDate(2), price: 55),
-////            PriceData(date: makeDate(3), price: 28),
-////            PriceData(date: makeDate(4), price: 60),
-////            PriceData(date: makeDate(5), price: 40.55),
-////        ]),
-////
-////        Stock(symbol: "AAPL", name: "Apple", price: 175.30, icon: "applelogo", color: .green, prices: [
-////            PriceData(date: makeDate(1), price: 140),
-////            PriceData(date: makeDate(2), price: 200),
-////            PriceData(date: makeDate(3), price: 130),
-////            PriceData(date: makeDate(4), price: 210),
-////            PriceData(date: makeDate(5), price: 175.3),
-////        ]),
-////
-////        Stock(symbol: "SONY", name: "Sony PlayStation", price: 90.12, icon: "playstation.logo", color: .indigo, prices: [
-////            PriceData(date: makeDate(1), price: 70),
-////            PriceData(date: makeDate(2), price: 110),
-////            PriceData(date: makeDate(3), price: 65),
-////            PriceData(date: makeDate(4), price: 115),
-////            PriceData(date: makeDate(5), price: 90),
-////        ]),
-////
-////        Stock(symbol: "MCD", name: "McDonald's", price: 280.50, icon: "fork.knife", color: .yellow, prices: [
-////            PriceData(date: makeDate(1), price: 240),
-////            PriceData(date: makeDate(2), price: 310),
-////            PriceData(date: makeDate(3), price: 230),
-////            PriceData(date: makeDate(4), price: 320),
-////            PriceData(date: makeDate(5), price: 280),
-////        ]),
-////
-////        Stock(symbol: "DIS", name: "Disney", price: 100.75, icon: "sparkles", color: .blue, prices: [
-////            PriceData(date: makeDate(1), price: 80),
-////            PriceData(date: makeDate(2), price: 130),
-////            PriceData(date: makeDate(3), price: 75),
-////            PriceData(date: makeDate(4), price: 140),
-////            PriceData(date: makeDate(5), price: 100.75),
-////        ]),
-////
-////        // Indo (extra brutal 😈)
-////
-////        Stock(symbol: "GOTO", name: "GoTo", price: 85, icon: "car.fill", color: .green, prices: [
-////            PriceData(date: makeDate(1), price: 50),
-////            PriceData(date: makeDate(2), price: 120),
-////            PriceData(date: makeDate(3), price: 40),
-////            PriceData(date: makeDate(4), price: 140),
-////            PriceData(date: makeDate(5), price: 85),
-////        ]),
-////
-////        Stock(symbol: "ICBP", name: "Indofood", price: 1020, icon: "fork.knife", color: .orange, prices: [
-////            PriceData(date: makeDate(1), price: 850),
-////            PriceData(date: makeDate(2), price: 1150),
-////            PriceData(date: makeDate(3), price: 800),
-////            PriceData(date: makeDate(4), price: 1200),
-////            PriceData(date: makeDate(5), price: 1020),
-////        ])
-////    ]
-////
-////    StockListScreen(stocks: stocks)
-////}
-////
-////// MARK: - Card
-////struct StockCard: View {
-////    var stock: Stock
-////
-////    var body: some View {
-////        ZStack(alignment: .bottomTrailing) {
-////
-////            RoundedRectangle(cornerRadius: 16)
-//////                .fill(.gray)
-////                .fill(stock.color.gradient)
-////
-////            VStack(alignment: .leading) {
-////
-////                HStack {
-////                    Text(stock.symbol)
-////                    Spacer()
-////                    Text("\(stock.price, specifier: "%.2f")")
-////                }
-////                .font(.title2.bold())
-////                .foregroundStyle(.white)
-////                .padding(.top, 10)
-////
-////                Text(stock.name)
-////                    .font(.subheadline)
-////                    .foregroundStyle(.white.opacity(0.8))
-////
-////                Spacer()
-////
-////                ChartView(stockPrices: stock.prices, width: 150, height: 100)
-////                Spacer()
-////            }
-////            .padding(.horizontal, 16)
-////
-////            Image(systemName: stock.icon)
-////                .font(.system(size: 40))
-////                .foregroundStyle(.white)
-////                .padding(12)
-////        }
-////        .frame(height: 238)
-////        .shadow(radius: 5)
-////    }
-////}
-////
-////
+////rsthtsrhsrhrh
+////wait
