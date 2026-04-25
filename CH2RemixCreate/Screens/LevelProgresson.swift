@@ -64,6 +64,11 @@ struct LevelProgressionMap: View {
             NavigationStack {
                 VStack {
                     
+                    Text("Study Time!")
+                           .font(.system(size: 28, weight: .bold, design: .rounded))
+                           .foregroundColor(Color(hex: "E1DDCE"))
+                           .padding(.bottom, 75)
+                    
                     if (testMode) {
                         HStack(spacing: 16) {
                             Text("Level: \(currentLevel)")
@@ -145,7 +150,7 @@ struct LevelProgressionMap: View {
                                                     currentLesson: $lessons[lessonIndex]
                                                 )) {
                                                     Circle()
-                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                         .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                         .frame(width: 35, height: 35)
                                                 }
@@ -165,7 +170,7 @@ struct LevelProgressionMap: View {
                                                 
                                             }) {
                                                 Circle()
-                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                     .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                     .frame(width: 35, height: 35)
                                                 
@@ -185,7 +190,7 @@ struct LevelProgressionMap: View {
                                                     quiz: $quizzes[quizIndex]
                                                 )) {
                                                     Circle()
-                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                         .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                         .frame(width: 50, height: 50)
                                                 }
@@ -204,7 +209,7 @@ struct LevelProgressionMap: View {
                                                 
                                             }) {
                                                 Circle()
-                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "FFDE63") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
+                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
                                                     .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
                                                     .frame(width: 50, height: 50)
                                             }

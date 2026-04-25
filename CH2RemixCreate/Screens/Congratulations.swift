@@ -70,7 +70,7 @@ struct Congratulations: View {
                             path.addLine(to: p1)
                         }
                         .trim(from: 0, to: pathScore1)
-                        .stroke(Color.green, style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                        .stroke(Color(hex: "7C5CBF"), style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                     }
                     
                     if score >= 2 {
@@ -80,7 +80,7 @@ struct Congratulations: View {
                             path.addLine(to: p2)
                         }
                         .trim(from: 0, to: pathScore2)
-                        .stroke(Color.green, style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                        .stroke(Color(hex: "7C5CBF"), style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                     }
                     
                     if score >= 3 {
@@ -89,12 +89,12 @@ struct Congratulations: View {
                             path.addLine(to: p3)
                         }
                         .trim(from: 0, to: pathScore3)
-                        .stroke(Color.red, style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                        .stroke(Color(hex: "C9F55F"), style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                         
                         Circle()
                             .frame(width: 20, height: 20)
                             .position(p2)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(Color(hex: "C9F55F"))
                             .scaleEffect(circle1Scale)
                     }
                     
@@ -104,12 +104,12 @@ struct Congratulations: View {
                             path.addLine(to: p4)
                         }
                         .trim(from: 0, to: pathScore4)
-                        .stroke(Color.green, style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                        .stroke(Color(hex: "7C5CBF"), style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
                         
                         Circle()
                             .frame(width: 20, height: 20)
                             .position(p3)
-                            .foregroundStyle(.green)
+                            .foregroundStyle(Color(hex: "7C5CBF"))
                             .scaleEffect(circle2Scale)
                     }
 
