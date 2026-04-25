@@ -19,7 +19,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            LevelProgressionMap(isGraduated: .constant(isGraduated), selectedTab: $selectedTab)
+            LevelProgressionMap(testMode: false, isGraduated: $isGraduated, selectedTab: $selectedTab)
                 .tag(0)
                 .tabItem {
                     Image(systemName: "map")

@@ -7,6 +7,7 @@ struct LevelProgressionMap: View {
     @State private var quizzes: [Quiz] = mockQuizzes
     @State private var lessons: [Lesson] = mockLesson
     @State private var showLockedPopup = false
+    @State var testMode: Bool
     @Binding var isGraduated: Bool
     @Binding var selectedTab: Int
 
@@ -20,6 +21,9 @@ struct LevelProgressionMap: View {
         return highest
     }
     
+    private var allCompleted: Bool {
+        lessons.allSatisfy { $0.isPassed } && quizzes.allSatisfy { $0.isPassed }
+    }
     
     private func directionColor(start: CGPoint, end: CGPoint) -> Color {
         Color(hex: "7C5CBF")
@@ -59,37 +63,41 @@ struct LevelProgressionMap: View {
         ZStack {
             NavigationStack {
                 VStack {
-                    HStack(spacing: 16) {
-                        Text("Level: \(currentLevel)")
-                            .font(.headline)
-                        Button("Increment") {
-                            // find first unpassed node in sequence: lesson0, quiz0, lesson1, quiz1...
-                            let totalSteps = lessons.count + quizzes.count
-                            for step in 0..<totalSteps {
-                                if step % 2 == 0 {
-                                    let lessonIndex = step / 2
-                                    if !lessons[lessonIndex].isPassed {
-                                        lessons[lessonIndex].isPassed = true
-                                        return
-                                    }
-                                } else {
-                                    let quizIndex = step / 2
-                                    if !quizzes[quizIndex].isPassed {
-                                        quizzes[quizIndex].isPassed = true
-                                        return
+                    
+                    if (testMode) {
+                        HStack(spacing: 16) {
+                            Text("Level: \(currentLevel)")
+                                .font(.headline)
+                            Button("Increment") {
+                                // find first unpassed node in sequence: lesson0, quiz0, lesson1, quiz1...
+                                let totalSteps = lessons.count + quizzes.count
+                                for step in 0..<totalSteps {
+                                    if step % 2 == 0 {
+                                        let lessonIndex = step / 2
+                                        if !lessons[lessonIndex].isPassed {
+                                            lessons[lessonIndex].isPassed = true
+                                            return
+                                        }
+                                    } else {
+                                        let quizIndex = step / 2
+                                        if !quizzes[quizIndex].isPassed {
+                                            quizzes[quizIndex].isPassed = true
+                                            return
+                                        }
                                     }
                                 }
                             }
-                        }
-                        .buttonStyle(.borderedProminent)
+                            .buttonStyle(.borderedProminent)
 
-                        Button("Reset") {
-                            for index in quizzes.indices { quizzes[index].isPassed = false }
-                            for index in lessons.indices { lessons[index].isPassed = false }
+                            Button("Reset") {
+                                for index in quizzes.indices { quizzes[index].isPassed = false }
+                                for index in lessons.indices { lessons[index].isPassed = false }
+                            }
+                            .buttonStyle(.bordered)
                         }
-                        .buttonStyle(.bordered)
+                        .padding(.horizontal)
+
                     }
-                    .padding(.horizontal)
                     
                     GeometryReader { proxy in
                         let visibleWidth = proxy.size.width
@@ -233,10 +241,11 @@ struct LevelProgressionMap: View {
                                 }
                                 .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y - 100)
                                 
-                                Image("JumpIn")
-                                    .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y-150)
-                                
-                                
+                                if (allCompleted) {
+                                    Image("JumpIn")
+                                        .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y-150)
+                                }
+
                             }
                             .frame(width: contentWidth, height: contentHeight + 200, alignment: .topLeading)
                         }
@@ -251,6 +260,9 @@ struct LevelProgressionMap: View {
                         .scaledToFill()
                         .ignoresSafeArea()
                 )
+            }
+            .onChange(of: allCompleted) { _, completed in
+                isGraduated = completed
             }
             
             // Locked Popup
@@ -267,10 +279,13 @@ struct LevelProgressionMap: View {
     }
 }
 
-#Preview {
-    LevelProgressionMap(isGraduated: .constant(true), selectedTab: .constant(0))
+#Preview ("Testing") {
+    LevelProgressionMap(testMode: true, isGraduated: .constant(true), selectedTab: .constant(0))
 }
 
+#Preview ("Not Testing") {
+    LevelProgressionMap(testMode: false, isGraduated: .constant(true), selectedTab: .constant(0))
+}
 
 //rsthtsrhsrhrh
 //wait
