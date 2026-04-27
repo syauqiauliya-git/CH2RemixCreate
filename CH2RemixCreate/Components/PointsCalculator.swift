@@ -34,17 +34,21 @@ struct PointsCalculator {
             let yFrac = points[index][1]
             
             let x: CGFloat
+            let y: CGFloat
             
             if index == 0 {
-                x = -10
+                x = -70
+                y = (contentHeight * CGFloat(yFrac)) + 150
             } else if index == points.count - 1 {
                 x = contentWidth - 35
+                y = contentHeight * CGFloat(yFrac)
+
             } else {
                 x = contentWidth * CGFloat(xFrac)
+                y = contentHeight * CGFloat(yFrac)
+
             }
-            
-            let y = contentHeight * CGFloat(yFrac)
-            
+                    
             calculatedPoints.append(CGPoint(x: x, y: y))
         }
         return calculatedPoints

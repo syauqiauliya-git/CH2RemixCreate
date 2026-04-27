@@ -105,7 +105,6 @@ struct LevelProgressionMap: View {
     }
     
     
-    
     var body: some View {
         ZStack {
             NavigationStack {
@@ -187,7 +186,8 @@ struct LevelProgressionMap: View {
                                     .offset(x: calculatedPoints[10].x - 25, y: calculatedPoints[6].y - 50)
                                 
                                 
-                                ForEach(1..<calculatedPoints.count-1, id: \.self) { index in
+                                ForEach(2..<calculatedPoints.count-1, id: \.self) { index in
+                                    
                                     let startNode = calculatedPoints[index - 1]
                                     let endNode = calculatedPoints[index]
                                     
@@ -210,6 +210,12 @@ struct LevelProgressionMap: View {
                                         quizNode(index: index, startNode: startNode, endNode: endNode, points: calculatedPoints)
                                     }
                                 }
+                                
+                                Image("Earth")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 200, height: 200)
+                                    .offset(x: calculatedPoints[0].x - 125, y: calculatedPoints[1].y + 50)
                                 
                                 let planet = Image("Planet1")
                                     .resizable()
