@@ -11,6 +11,7 @@ struct LevelProgressionMap: View {
     @Binding var isGraduated: Bool
     @Binding var selectedTab: Int
     
+    @State private var tapCount = 0
     
     
     private var currentLevel: Int {
@@ -114,6 +115,20 @@ struct LevelProgressionMap: View {
                         .font(.system(size: 40, weight: .bold, design: .rounded))
                         .foregroundColor(Color(hex: "E1DDCE"))
                         .padding(.bottom, 60)
+                        .onTapGesture {
+                            tapCount += 1
+                            
+                            if tapCount == 3{
+                                for index in quizzes.indices { quizzes[index].isPassed = true }
+                                for index in lessons.indices { lessons[index].isPassed = true }
+                            }
+                            
+                            if tapCount == 5 {
+                                for index in quizzes.indices { quizzes[index].isPassed = false }
+                                for index in lessons.indices { lessons[index].isPassed = false }
+                                tapCount = 0
+                            }
+                        }
                     
                     if (testMode) {
                         HStack(spacing: 16) {
