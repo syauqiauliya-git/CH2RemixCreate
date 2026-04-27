@@ -10,7 +10,7 @@ struct LevelProgressionMap: View {
     @State var testMode: Bool
     @Binding var isGraduated: Bool
     @Binding var selectedTab: Int
-
+    
     
     
     private var currentLevel: Int {
@@ -58,6 +58,52 @@ struct LevelProgressionMap: View {
         return isReached(levelIndex: levelIndex - 1)
     }
     
+    private func lessonNode(index: Int, startNode: CGPoint, endNode: CGPoint, points: [CGPoint]) -> some View {
+        let lessonIndex = (index - 1) / 2
+        let fill = isUnlocked(levelIndex: index) && !isReached(levelIndex: index)
+        ? Color(hex: "C9F55F")
+        : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode)
+        let stroke = circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode)
+        let circle = NodeCircle(size: 35, fillColor: fill, strokeColor: stroke)
+        
+        return Group {
+            if isUnlocked(levelIndex: index), lessonIndex < lessons.count {
+                NavigationLink(destination: LessonScreen(currentLesson: $lessons[lessonIndex])) { circle }
+                    .buttonStyle(.plain)
+            } else {
+                Button { triggerLockedPopup() } label: { circle }
+            }
+        }
+        .offset(x: points[index].x - 17.5, y: points[index].y - 17.5)
+    }
+    
+    private func quizNode(index: Int, startNode: CGPoint, endNode: CGPoint, points: [CGPoint]) -> some View {
+        let quizIndex = (index / 2) - 1
+        let fill = isUnlocked(levelIndex: index) && !isReached(levelIndex: index)
+        ? Color(hex: "C9F55F")
+        : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode)
+        let stroke = circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode)
+        let circle = NodeCircle(size: 50, fillColor: fill, strokeColor: stroke)
+        
+        return Group {
+            if isUnlocked(levelIndex: index), quizIndex >= 0, quizIndex < quizzes.count {
+                NavigationLink(destination: QuizScreen(quiz: $quizzes[quizIndex])) { circle }
+                    .buttonStyle(.plain)
+            } else {
+                Button { triggerLockedPopup() } label: { circle }
+            }
+        }
+        .offset(x: points[index].x - 25, y: points[index].y - 25)
+    }
+    
+    private func triggerLockedPopup() {
+        showLockedPopup = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            withAnimation { showLockedPopup = false }
+        }
+    }
+    
+    
     
     var body: some View {
         ZStack {
@@ -65,9 +111,9 @@ struct LevelProgressionMap: View {
                 VStack {
                     
                     Text("Study Time!")
-                           .font(.system(size: 28, weight: .bold, design: .rounded))
-                           .foregroundColor(Color(hex: "E1DDCE"))
-                           .padding(.bottom, 75)
+                        .font(.system(size: 40, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(hex: "E1DDCE"))
+                        .padding(.bottom, 60)
                     
                     if (testMode) {
                         HStack(spacing: 16) {
@@ -94,7 +140,7 @@ struct LevelProgressionMap: View {
                                 }
                             }
                             .buttonStyle(.borderedProminent)
-
+                            
                             Button("Reset") {
                                 for index in quizzes.indices { quizzes[index].isPassed = false }
                                 for index in lessons.indices { lessons[index].isPassed = false }
@@ -102,7 +148,7 @@ struct LevelProgressionMap: View {
                             .buttonStyle(.bordered)
                         }
                         .padding(.horizontal)
-
+                        
                     }
                     
                     GeometryReader { proxy in
@@ -118,6 +164,12 @@ struct LevelProgressionMap: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             ZStack (alignment: .topLeading) {
+
+                                customAlienView()
+                                    .offset(x: calculatedPoints[5].x - 25, y: calculatedPoints[4].y + 100)
+                                
+                                customAlienView()
+                                    .offset(x: calculatedPoints[10].x - 25, y: calculatedPoints[6].y - 50)
                                 
                                 
                                 ForEach(1..<calculatedPoints.count-1, id: \.self) { index in
@@ -134,89 +186,13 @@ struct LevelProgressionMap: View {
                                 }
                                 
                                 ForEach(1..<calculatedPoints.count, id: \.self) { index in
-                                    
                                     let startNode = calculatedPoints[index - 1]
                                     let endNode = calculatedPoints[index]
                                     
-                                    let isHalf = (index % 2 == 1)
-                                    
-                                    if isHalf {
-                                        // --- LESSON NODES ---
-                                        
-                                        let lessonIndex = (index - 1) / 2
-                                        
-                                        if isUnlocked(levelIndex: index){
-                                            if lessonIndex >= 0 && lessonIndex < lessons.count {
-                                                NavigationLink(destination: LessonScreen (
-                                                    currentLesson: $lessons[lessonIndex]
-                                                )) {
-                                                    Circle()
-                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
-                                                        .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                                        .frame(width: 35, height: 35)
-                                                }
-                                                .buttonStyle(.plain)
-                                                .offset(x: calculatedPoints[index].x - 17.5, y: calculatedPoints[index].y - 17.5)
-                                            }
-                                            
-                                        } else {
-                                            
-                                            Button(action: {
-                                                showLockedPopup = true
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                                                    withAnimation {
-                                                        showLockedPopup = false
-                                                    }
-                                                }
-                                                
-                                            }) {
-                                                Circle()
-                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
-                                                    .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                                    .frame(width: 35, height: 35)
-                                                
-                                            }
-                                            .offset(x: calculatedPoints[index].x - 17.5, y: calculatedPoints[index].y - 17.5)
-                                        }
-                                        
+                                    if index % 2 == 1 {
+                                        lessonNode(index: index, startNode: startNode, endNode: endNode, points: calculatedPoints)
                                     } else {
-                                        
-                                        // --- QUIZ NODES ---
-                                        
-                                        let quizIndex = (index / 2) - 1
-                                        
-                                        if isUnlocked(levelIndex: index){
-                                            if quizIndex >= 0 && quizIndex < mockQuizzes.count {
-                                                NavigationLink(destination: QuizScreen(
-                                                    quiz: $quizzes[quizIndex]
-                                                )) {
-                                                    Circle()
-                                                        .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
-                                                        .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                                        .frame(width: 50, height: 50)
-                                                }
-                                                .buttonStyle(.plain)
-                                                .offset(x: calculatedPoints[index].x - 25, y: calculatedPoints[index].y - 25)
-                                            }
-                                        } else {
-                                            
-                                            Button (action: {
-                                                showLockedPopup = true
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                                                    withAnimation {
-                                                        showLockedPopup = false
-                                                    }
-                                                }
-                                                
-                                            }) {
-                                                Circle()
-                                                    .fill(isUnlocked(levelIndex: index) && !isReached(levelIndex: index) ? Color(hex: "C9F55F") : circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode))
-                                                    .overlay(Circle().stroke(circleStrokeColor(threshold: index, incomingStart: startNode, incomingEnd: endNode), lineWidth: 2))
-                                                    .frame(width: 50, height: 50)
-                                            }
-                                            .offset(x: calculatedPoints[index].x - 25, y: calculatedPoints[index].y - 25)
-                                        }
-                                        
+                                        quizNode(index: index, startNode: startNode, endNode: endNode, points: calculatedPoints)
                                     }
                                 }
                                 
@@ -224,7 +200,7 @@ struct LevelProgressionMap: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 200, height: 200)
-
+                                
                                 Group {
                                     if isGraduated {
                                         Button {
@@ -251,7 +227,7 @@ struct LevelProgressionMap: View {
                                     Image("JumpIn")
                                         .offset(x: calculatedPoints[11].x - 100, y: calculatedPoints[11].y-150)
                                 }
-
+                                
                             }
                             .frame(width: contentWidth, height: contentHeight + 200, alignment: .topLeading)
                         }
@@ -283,6 +259,41 @@ struct LevelProgressionMap: View {
                     .fontDesign(.rounded)
             }
         }
+    }
+}
+
+// MARK: - Subviews
+
+struct NodeCircle: View {
+    let size: CGFloat
+    let fillColor: Color
+    let strokeColor: Color
+    
+    var body: some View {
+        Circle()
+            .fill(fillColor)
+            .overlay(Circle().stroke(strokeColor, lineWidth: 2))
+            .frame(width: size, height: size)
+    }
+}
+
+struct customAlienView: View {
+    let imageName: String = "alien"
+    let size: Int = 60
+    
+    var body: some View {
+        ZStack {
+            Image("alien")
+                .resizable()
+                .scaledToFit()
+            Color(hex: "393B55").opacity(0.9)
+                .mask(
+                    Image("alien")
+                        .resizable()
+                        .scaledToFit()
+                )
+        }
+        .frame(width: 60, height: 60)
     }
 }
 

@@ -16,7 +16,7 @@ struct StockCard: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 30)
 //                .fill(.gray)
             
 //                .fill(.clear)
@@ -26,7 +26,7 @@ struct StockCard: View {
                 .fill(color)
                 .fill(.ultraThinMaterial)
                 .overlay(
-                        RoundedRectangle(cornerRadius: 16)
+                        RoundedRectangle(cornerRadius: 30)
                             .stroke(.white.opacity(0.3), lineWidth: 1)
                     )
             VStack(alignment: .leading, ) {

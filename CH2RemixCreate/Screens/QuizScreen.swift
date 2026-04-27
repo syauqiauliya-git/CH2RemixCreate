@@ -101,7 +101,7 @@ struct QuizScreen: View {
                             .fontWeight(.medium)
                             .foregroundColor(.primary)
                             .padding()
-                            .frame(maxWidth: .infinity, minHeight: 60)
+                            .frame(width: 180, height: 80)
                             .background(selectedAnswer != answer ? Color.gray.opacity(0.3): (selectedAnswer == currentQuestion.correctAnswer ? Color.green.opacity(0.3): Color.red.opacity(0.3)))
                             .cornerRadius(12)
                     }
