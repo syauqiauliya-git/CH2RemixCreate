@@ -178,7 +178,7 @@ struct LevelProgressionMap: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             ZStack (alignment: .topLeading) {
-
+                                
                                 customAlienView()
                                     .offset(x: calculatedPoints[5].x - 25, y: calculatedPoints[4].y + 100)
                                 
@@ -263,7 +263,9 @@ struct LevelProgressionMap: View {
                         .scaledToFill()
                         .ignoresSafeArea()
                 )
+                .ignoresSafeArea(edges: .bottom)
             }
+            .background(.clear)
             .onChange(of: allCompleted) { _, completed in
                 isGraduated = completed
             }
@@ -280,6 +282,7 @@ struct LevelProgressionMap: View {
                     .fontDesign(.rounded)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

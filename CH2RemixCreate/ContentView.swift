@@ -15,9 +15,6 @@ struct ContentView: View {
     @State var isGraduated: Bool
     
     
-    
-
-    
     var body: some View {
         TabView(selection: $selectedTab) {
             LevelProgressionMap(testMode: false, isGraduated: $isGraduated, selectedTab: $selectedTab)
@@ -53,6 +50,7 @@ struct ContentView: View {
                 }
         }
         .tint(Color(hex: "C9F55F"))
+        .toolbarBackground(.hidden, for: .tabBar) 
         
     }
     
