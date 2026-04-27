@@ -134,8 +134,10 @@ struct StockDetailSheet: View {
                     VStack (alignment: .leading){
                         Text(tickerSymbol)
                             .font(.system(size: 50))
+                            .fontDesign(.rounded)
                         Text(vm.companyName)
                             .foregroundStyle(.gray)
+                            .fontDesign(.rounded)
                     }
                     .bold()
                     
@@ -144,8 +146,10 @@ struct StockDetailSheet: View {
                 HStack{
                     Text("\(vm.prices.last?.price ?? 0, specifier: "%.2f")")
                         .font(.system(size: 35))
+                        .fontDesign(.rounded)
                     Text("2.75%")
                         .foregroundStyle(.green)
+                        .fontDesign(.rounded)
                     
                 }
                 .padding(15)

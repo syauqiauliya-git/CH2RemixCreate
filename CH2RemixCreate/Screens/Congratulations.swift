@@ -31,6 +31,7 @@ struct Congratulations: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 40)
                 .padding(.bottom, 175)
+                .fontDesign(.rounded)
             
             // --- CHART AREA ---
             GeometryReader { proxy in
@@ -124,9 +125,11 @@ struct Congratulations: View {
                 Text("\(score)/4")
                     .font(.system(size: 64, weight: .heavy))
                     .foregroundStyle(.primary)
+                    .fontDesign(.rounded)
                 
                 Text(score == 4 ? "Perfect!" : (score == 3 ? "Nice!" : "Keep Trying!"))
                     .font(.title3)
+                    .fontDesign(.rounded)
                     .fontWeight(.semibold)
                     .foregroundStyle(score > 3 ? .green : (score > 2 ? .orange : .red))
             }
@@ -136,6 +139,7 @@ struct Congratulations: View {
             // --- CALL TO ACTION ---
             Text("Press Anywhere to Continue")
                 .font(.subheadline)
+                .fontDesign(.rounded)
                 .fontWeight(.medium)
                 .foregroundStyle(.tertiary)
                 .padding(.bottom, 75)

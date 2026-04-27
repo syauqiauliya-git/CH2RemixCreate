@@ -21,7 +21,8 @@ struct StockDetailInfo:View {
             Text(detailValue)
                 .font(.title)
         }
-        .bold()
+        .fontDesign(.rounded)
+    
         .padding(10)
         .frame(maxWidth: 170)
     }

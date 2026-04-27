@@ -15,6 +15,7 @@ struct stockSummary: Identifiable{
 
 
 struct StockListScreen: View {
+    @State private var searchText = ""
     @State private var selectedStock: String? = nil
     @State private var showSheet = false
     let stocks: [String] = stockListDummyData
@@ -35,11 +36,18 @@ struct StockListScreen: View {
                     .edgesIgnoringSafeArea(.all)
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(Array(stocks.enumerated()), id: \.element) { index, symbol in
+                        ForEach(
+                            Array(stocks.filter {
+                                searchText.isEmpty || $0.localizedCaseInsensitiveContains(searchText)
+                            }.enumerated()),
+                            id: \.element
+                        ) { index, symbol in
+                            let originalIndex = stocks.firstIndex(of: symbol) ?? 0
+
                             StockCardContainer(
                                 symbol: symbol,
-                                color: cardColors[index % cardColors.count],
-                                icon: icon[index % icon.count]
+                                color: cardColors[originalIndex % cardColors.count],
+                                icon: icon[originalIndex % icon.count]
                             )
                             .onTapGesture {
                                 selectedStock = symbol
@@ -63,6 +71,7 @@ struct StockListScreen: View {
                 }
             }
         }
+        .searchable(text: $searchText, prompt: "Search stocks...")
     }
 }
 

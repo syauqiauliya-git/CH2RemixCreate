@@ -27,6 +27,7 @@ struct QuizScreen: View {
         VStack {
             Text("Answer!")
                 .font(.title.bold())
+                .fontDesign(.rounded)
             
             Spacer()
             
@@ -47,6 +48,7 @@ struct QuizScreen: View {
                         .font(.headline)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
+                        .fontDesign(.rounded)
                 }
             }
             .frame(height: 400)

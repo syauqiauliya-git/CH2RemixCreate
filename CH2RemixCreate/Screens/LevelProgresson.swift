@@ -73,6 +73,7 @@ struct LevelProgressionMap: View {
                         HStack(spacing: 16) {
                             Text("Level: \(currentLevel)")
                                 .font(.headline)
+                                .fontDesign(.rounded)
                             Button("Increment") {
                                 // find first unpassed node in sequence: lesson0, quiz0, lesson1, quiz1...
                                 let totalSteps = lessons.count + quizzes.count
@@ -279,6 +280,7 @@ struct LevelProgressionMap: View {
                     .cornerRadius(10)
                     .transition(.opacity) // Smooth transition
                     .zIndex(1) // Ensure it's on top
+                    .fontDesign(.rounded)
             }
         }
     }

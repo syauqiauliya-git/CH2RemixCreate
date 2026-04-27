@@ -25,12 +25,14 @@ struct StockDetailChart: View {
                 Text(error)
                     .foregroundStyle(.red)
                     .font(.caption)
+                    .fontDesign(.rounded)
             }
             
             Picker("Chart Mode", selection: $vm.selectedMode) {
                 ForEach(ChartMode.allCases.filter { $0 != .summary }) { mode in
                     Text(mode.rawValue)
                         .tag(mode)
+                        .fontDesign(.rounded)
                 }
             }
             .pickerStyle(.segmented)
@@ -95,6 +97,7 @@ struct StockDetailChart: View {
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .frame(height: 250)
+                    .fontDesign(.rounded)
             }
         }
         

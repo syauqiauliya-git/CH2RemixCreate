@@ -31,6 +31,7 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                     Text("Stocks")
+                        .fontDesign(.rounded)
                 }
                 .disabled(!isGraduated)
                 .overlay {
@@ -42,6 +43,7 @@ struct ContentView: View {
                                     .font(.largeTitle)
                                     .foregroundColor(.white)
                                 Text("Finish your journey to unlock this feature")
+                                    .fontDesign(.rounded)
                             }
                             
                         }
@@ -55,6 +57,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(isGraduated: false)
+    ContentView(isGraduated: true)
 }
 

@@ -12,32 +12,37 @@ struct MyToolbar: ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             VStack(alignment: .leading) {
                 Text("Stocks")
+                  
+
                 Text("16 April")
                     .foregroundStyle(.gray)
                     .font(.title2)
+                    .padding(.bottom, 30)
             }
             .fixedSize()
             .font(.title.bold())
-            
+            .fontDesign(.rounded)
+           
+        
             
         }
         .sharedBackgroundVisibility(.hidden)
 
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button {
-                
-            } label: {
-                Image(systemName: "magnifyingglass")
-            }
-
-            Menu {
-                Button("Search") {}
-                Button("Another action") {}
-                Button("Something else") {}
-            } label: {
-                Image(systemName: "ellipsis")
-            }
-        }
+//        ToolbarItemGroup(placement: .topBarTrailing) {
+//            Button {
+//                
+//            } label: {
+//                Image(systemName: "magnifyingglass")
+//            }
+//
+////            Menu {
+////                Button("Search") {}
+////                Button("Another action") {}
+////                Button("Something else") {}
+////            } label: {
+////                Image(systemName: "ellipsis")
+////            }
+//        }
     }
 }
 

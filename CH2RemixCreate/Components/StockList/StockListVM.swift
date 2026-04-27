@@ -13,7 +13,7 @@ class StockListVM: ObservableObject {
     @Published var summaries: [StockSummary] = []
     
     func fetchAll() async {
-        let symbols = ["RBLX", "NFLX", "WBD", "AAPL", "TSLA"]
+        let symbols = stockListDummyData
         
         var temp: [StockSummary] = []
         

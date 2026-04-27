@@ -38,9 +38,11 @@ struct StockCard: View {
                 }
                 .font(.title2.bold())
                 .foregroundStyle(.white)
+                .fontDesign(.rounded)
                 
                 Text(stock.name)
                     .font(.caption)
+                    .fontDesign(.rounded)
                     .foregroundStyle(.white.opacity(0.8))
                 
                 Spacer()

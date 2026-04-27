@@ -88,6 +88,7 @@ struct LessonScreen: View {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 15, weight: .bold))
                 }
+                .fontDesign(.rounded)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color(hex: "C9F55F").opacity(0.75))
