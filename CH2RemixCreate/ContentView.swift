@@ -15,6 +15,7 @@ struct ContentView: View {
     @State var isGraduated: Bool
     
     
+    
 
     
     var body: some View {

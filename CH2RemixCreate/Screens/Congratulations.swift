@@ -131,7 +131,7 @@ struct Congratulations: View {
                     .font(.title3)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
-                    .foregroundStyle(score > 3 ? .green : (score > 2 ? .orange : .red))
+                    .foregroundStyle(.white)
             }
             
             Spacer()

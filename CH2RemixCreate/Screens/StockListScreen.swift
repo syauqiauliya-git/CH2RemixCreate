@@ -2,14 +2,7 @@ import SwiftUI
 import Charts
 import Combine
 
-struct stockSummary: Identifiable{
-    let id = UUID()
-    let symbol: String
-    let name: String
-    let price: Double
-    let prices: [Double]
-    let color: Color
-}
+
 
 
 

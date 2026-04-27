@@ -10,12 +10,12 @@ import Combine
 
 @MainActor
 class StockListVM: ObservableObject {
-    @Published var summaries: [StockSummary] = []
+    @Published var summaries: [stockSummary] = []
     
     func fetchAll() async {
         let symbols = stockListDummyData
         
-        var temp: [StockSummary] = []
+        var temp: [stockSummary] = []
         
         for symbol in symbols {
             let vm = StockVM(tickerSymbol: symbol)

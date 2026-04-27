@@ -25,14 +25,15 @@ class StockVM: ObservableObject {
             self.tickerSymbol = tickerSymbol
         }
     
-    var summary: StockSummary? {
+    var summary: stockSummary? {
         guard let latestPrice = prices.last?.price else { return nil }
         
-        return StockSummary(
+        return stockSummary(
             symbol: tickerSymbol,
             name: companyName,
             price: latestPrice,
             prices: prices.map { $0.price },
+            color: .gray
         )
     }
 

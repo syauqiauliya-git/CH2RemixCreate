@@ -9,14 +9,14 @@ import SwiftUI
 import Charts
 import Combine
 struct StockCard: View {
-    var stock: StockSummary
+    var stock: stockSummary
     var color: Color = .gray
     var icon: String
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             
-            RoundedRectangle(cornerRadius: 30)
+            RoundedRectangle(cornerRadius: 35)
 //                .fill(.gray)
             
 //                .fill(.clear)
@@ -25,10 +25,10 @@ struct StockCard: View {
 //                .fill(cardColors.randomElement() ?? .gray)
                 .fill(color)
                 .fill(.ultraThinMaterial)
-                .overlay(
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(.white.opacity(0.3), lineWidth: 1)
-                    )
+//                .overlay(
+//                        RoundedRectangle(cornerRadius: 40)
+//                            .stroke(.white.opacity(0.3), lineWidth: 1)
+//                    )
             VStack(alignment: .leading, ) {
                 
                 HStack {
