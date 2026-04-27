@@ -52,6 +52,7 @@ struct ContentView: View {
                     }
                 }
         }
+        .tint(Color(hex: "C9F55F"))
         
     }
     
