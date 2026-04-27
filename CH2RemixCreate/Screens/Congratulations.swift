@@ -150,6 +150,7 @@ struct Congratulations: View {
         .onAppear {
             startSequence()
         }
+        .toolbar(.hidden, for:.tabBar)
     }
     
     private func startSequence() {

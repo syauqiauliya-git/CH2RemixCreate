@@ -57,6 +57,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(isGraduated: true)
+    ContentView(isGraduated: false)
 }
 

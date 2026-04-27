@@ -104,6 +104,7 @@ struct LessonScreen: View {
             
         }
         .background(Color(hex: "393B55"))
+        .toolbar(.hidden, for:.tabBar)
         
     }
 }

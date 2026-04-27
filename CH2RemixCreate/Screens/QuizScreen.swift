@@ -24,38 +24,65 @@ struct QuizScreen: View {
         
         let currentQuestion = quiz.questions[currentQuestionIndex]
         
-        VStack {
+        VStack(alignment: .center) {
+            
             Text("Answer!")
                 .font(.title.bold())
                 .fontDesign(.rounded)
             
             Spacer()
             
-            //card
-            ZStack{
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.gray.opacity(0.5))
-                VStack(spacing:12){
-                    if let image = currentQuestion.questionImage {
+            ZStack(alignment: .top) {
+                
+                ZStack{
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.gray.opacity(0.4))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white.opacity(0.3))
+                        )
+                        .frame(height: 400)
+                        .padding(.top, 55)
+                    
+                    Text(currentQuestion.question)
+                        .font(.title)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .fontDesign(.rounded)
+                        .bold()
+                        .padding(.top, 55)
+                }
+                
+                
+               
+                if let image = currentQuestion.questionImage {
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: "C9F55F"))
+                            .frame(width: 120)
+                        
                         image
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
-                            .foregroundColor(.blue)
                     }
-                    
-                    Text(currentQuestion.question)
-                        .font(.headline)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        .fontDesign(.rounded)
+                    .offset(y: 0) // bisa di tweak (-10, dll)
                 }
+                
+            
             }
-            .frame(height: 400)
+        
             
-            Spacer()
+
+
+                
+                
+//
+
             
-            // question count indicator
+            
+            
+
             
             HStack(spacing: 8) {
                 ForEach(0..<quiz.questions.count, id: \.self) { index in
@@ -102,8 +129,10 @@ struct QuizScreen: View {
                             .foregroundColor(.primary)
                             .padding()
                             .frame(width: 180, height: 80)
-                            .background(selectedAnswer != answer ? Color.gray.opacity(0.3): (selectedAnswer == currentQuestion.correctAnswer ? Color.green.opacity(0.3): Color.red.opacity(0.3)))
+                            .background(selectedAnswer != answer ? Color.gray.opacity(0.4): (selectedAnswer == currentQuestion.correctAnswer ? Color.green.opacity(0.3): Color.red.opacity(0.3)))
+                            
                             .cornerRadius(12)
+                        
                     }
                     .buttonStyle(.plain)
                 }
@@ -111,15 +140,24 @@ struct QuizScreen: View {
             
             Spacer()
         }
+        .toolbar(.hidden, for:.tabBar)
+
+        
         .padding()
         .fullScreenCover(isPresented: $isCongratulationsPresented, onDismiss: {
             dismiss()
         }) {
             Congratulations(score: scoreCount)
         }
+        .background(Color(hex: "393B55"))
+            .ignoresSafeArea()
+        
     }
+        
+        
     
 }
+   
 
 #Preview {
     QuizScreen(quiz: .constant(mockQuizzes[0]))
